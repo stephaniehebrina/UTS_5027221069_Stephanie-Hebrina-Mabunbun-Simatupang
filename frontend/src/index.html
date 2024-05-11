@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medicine Management</title>
+    <!-- Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100 p-4">
+    <div class="max-w-md mx-auto bg-white rounded-lg overflow-hidden shadow-lg p-6">
+        <h1 class="text-2xl font-semibold mb-4">Medicine Management</h1>
+
+        <div id="message" class="text-green-600 mb-4"></div>
+
+        <h2 class="text-xl font-semibold mb-2">Add Medicine</h2>
+        <form id="addMedicineForm" class="mb-4">
+            <div class="flex flex-col mb-2">
+                <label for="id" class="mb-1">ID:</label>
+                <input type="text" id="id" class="border border-gray-300 rounded-md py-1 px-3 focus:outline-none">
+            </div>
+            <div class="flex flex-col mb-2">
+                <label for="name" class="mb-1">Medicine:</label>
+                <input type="text" id="name" class="border border-gray-300 rounded-md py-1 px-3 focus:outline-none">
+            </div>
+            <div class="flex flex-col mb-2">
+                <label for="type" class="mb-1">Type:</label>
+                <select id="type" class="border border-gray-300 rounded-md py-1 px-3 focus:outline-none">
+                    <option value="sirup">Sirup</option>
+                    <option value="kapsul">Kapsul</option>
+                    <option value="tablet">Tablet</option>
+                </select>
+            </div>
+            <div class="flex flex-col mb-2">
+                <label for="quantity" class="mb-1">Quantity:</label>
+                <input type="number" id="quantity" class="border border-gray-300 rounded-md py-1 px-3 focus:outline-none">
+            </div>
+            <div class="flex flex-col mb-2">
+                <label for="deliveryType" class="mb-1">Delivery Type:</label>
+                <select id="deliveryType" class="border border-gray-300 rounded-md py-1 px-3 focus:outline-none">
+                    <option value="pick up">Pick Up</option>
+                    <option value="delivery">Delivery</option>
+                </select>
+            </div>
+            <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">Add Medicine</button>
+        </form>
+
+        <h2 class="text-xl font-semibold mb-2">All Medicines</h2>
+        <ul id="medicineList" class="border border-gray-300 rounded-lg p-2">
+            <!-- Medicines will be dynamically added here -->
+        </ul>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        const addMedicineForm = document.getElementById('addMedicineForm');
+        const messageDiv = document.getElementById('message');
+        const medicineListUl = document.getElementById('medicineList');
+
+        // Function to handle form submission for adding medicine
+        addMedicineForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const id = document.getElementById('id').value;
+            const name = document.getElementById('name').value;
+            const type = document.getElementById('type').value;
+            const quantity = parseInt(document.getElementById('quantity').value);
+            const deliveryType = document.getElementById('deliveryType').value;
+
+            const response = await fetch('/addMedicine', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id,
+                    name,
+                    type,
+                    quantity,
+                    delivery_type: deliveryType // use snake_case as defined in the server
+                })
+            });
+
+            const data = await response.json();
+            messageDiv.textContent = data.message;
+
+            // Refresh medicine list after adding
+            await fetchAllMedicines();
+        });
+
+        // Function to fetch and display all medicines
+        async function fetchAllMedicines() {
+            const response = await fetch('/allMedicines');
+            const data = await response.json();
+
+            medicineListUl.innerHTML = '';
+            data.medicines.forEach(medicine => {
+                const li = document.createElement('li');
+                li.textContent = `${medicine.id} - ${medicine.name} (${medicine.quantity})`;
+
+                // Add Update and Delete buttons
+                const updateButton = document.createElement('button');
+                updateButton.textContent = 'Update';
+                updateButton.className = 'ml-2 bg-green-500 text-white py-1 px-2 rounded-md hover:bg-green-600 focus:outline-none focus:bg-green-600';
+                updateButton.addEventListener('click', () => {
+                    // Call function to update medicine
+                    updateMedicine(medicine.id);
+                });
+                li.appendChild(updateButton);
+
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Delete';
+                deleteButton.className = 'ml-2 bg-red-500 text-white py-1 px-2 rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600';
+                deleteButton.addEventListener('click', () => {
+                    // Call function to delete medicine
+                    deleteMedicine(medicine.id);
+                });
+                li.appendChild(deleteButton);
+
+                medicineListUl.appendChild(li);
+            });
+        }
+
+        // Call function to fetch and display all medicines on page load
+        fetchAllMedicines();
+
+        // Function to handle medicine deletion
+        async function deleteMedicine(medicineId) {
+            const response = await fetch(`/deleteMedicine/${medicineId}`, {
+                method: 'DELETE'
+            });
+            const data = await response.json();
+            messageDiv.textContent = data.message;
+
+            // Refresh medicine list after deletion
+            await fetchAllMedicines();
+        }
+
+        // Function to handle medicine update
+        async function updateMedicine(medicineId) {
+            const name = prompt('Enter updated medicine name:');
+            const type = prompt('Enter updated medicine type:');
+            const quantity = parseInt(prompt('Enter updated medicine quantity:'));
+            const deliveryType = prompt('Enter updated medicine delivery type (pick up/delivery):');
+
+            const response = await fetch(`/updateMedicine/${medicineId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name,
+                    type,
+                    quantity,
+                    delivery_type: deliveryType // use snake_case as defined in the server
+                })
+            });
+
+            const data = await response.json();
+            messageDiv.textContent = data.message;
+
+            // Refresh medicine list after update
+            await fetchAllMedicines();
+        }
+    </script>
+</body>
+
+<footer class="text-center py-4 text-gray-500 text-sm">
+    &copy; 2024 Stephanie Hebrina (5027221069).
+</footer>
+
+</html>

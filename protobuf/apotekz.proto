@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+// python3 -m grpc_tools.protoc --proto_path=protobuf --python_out=backend --grpc_python_out=backend apotekz.proto
+
+message Medicine {
+  string id = 1;
+  string name = 2;
+  string type = 3;
+  int32 quantity = 4;
+  string delivery_type = 5;
+}
+
+message MedicineList {
+  repeated Medicine medicines = 1;
+}
+
+message MedicineId {
+  string id = 1;
+}
+
+message Empty {}
+
+// Service
+service MedicineService {
+  // Create
+  rpc AddMedicine (Medicine) returns (Medicine) {}
+  // Read 
+  rpc GetAllMedicines (Empty) returns (MedicineList) {}
+  rpc GetMedicine (MedicineId) returns (Medicine) {}
+  // Update
+  rpc UpdateMedicine (Medicine) returns (Medicine) {}
+  // Delete
+  rpc DeleteMedicine (MedicineId) returns (Empty) {}
+}

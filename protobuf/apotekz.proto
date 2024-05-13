@@ -1,7 +1,5 @@
 syntax = "proto3";
 
-// python3 -m grpc_tools.protoc --proto_path=protobuf --python_out=backend --grpc_python_out=backend apotekz.proto
-
 message Medicine {
   string id = 1;
   string name = 2;

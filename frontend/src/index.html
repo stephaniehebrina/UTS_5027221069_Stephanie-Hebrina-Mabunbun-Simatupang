@@ -4,42 +4,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medicine Management</title>
+    <title>👩🏻‍⚕️ Medicine Management👨🏻‍⚕️</title>
     <!-- Tailwind CSS -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 
-<body class="bg-gray-100 p-4">
-    <div class="max-w-md mx-auto bg-white rounded-lg overflow-hidden shadow-lg p-6">
-        <h1 class="text-2xl font-semibold mb-4">Medicine Management</h1>
+<body class="bg-gray-100">
+
+    <!-- Navbar -->
+    <nav class="bg-pink-200 p-4 shadow-md">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="#" class="text-2xl font-semibold text-gray-700">👩🏻‍⚕️ Medicine Management👨🏻‍⚕️</a>
+            <div class="flex space-x-4">
+                <a href="#" class="text-gray-700 hover:text-gray-900">Home</a>
+                <a href="#" class="text-gray-700 hover:text-gray-900">About</a>
+                <a href="#" class="text-gray-700 hover:text-gray-900">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-2xl mx-auto bg-white rounded-lg overflow-hidden shadow-lg p-6 mt-6">
+        <h1 class="text-2xl font-semibold mb-4 text-gray-800">Medicine Management 🩺</h1>
 
         <div id="message" class="text-green-600 mb-4"></div>
 
-        <h2 class="text-xl font-semibold mb-2">Add Medicine</h2>
+        <h2 class="text-xl font-semibold mb-2 text-gray-800">Add Medicine 💊</h2>
         <form id="addMedicineForm" class="mb-4">
             <div class="flex flex-col mb-2">
-                <label for="id" class="mb-1">ID:</label>
-                <input type="text" id="id" class="border border-gray-300 rounded-md py-1 px-3 focus:outline-none">
+                <label for="id" class="mb-1 text-gray-700">🪪 ID:</label>
+                <input type="text" id="id" class="border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring focus:ring-pink-200">
             </div>
             <div class="flex flex-col mb-2">
-                <label for="name" class="mb-1">Medicine:</label>
-                <input type="text" id="name" class="border border-gray-300 rounded-md py-1 px-3 focus:outline-none">
+                <label for="name" class="mb-1 text-gray-700">💊 Medicine:</label>
+                <input type="text" id="name" class="border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring focus:ring-pink-200">
             </div>
             <div class="flex flex-col mb-2">
-                <label for="type" class="mb-1">Type:</label>
-                <select id="type" class="border border-gray-300 rounded-md py-1 px-3 focus:outline-none">
+                <label for="type" class="mb-1 text-gray-700">Type:</label>
+                <select id="type" class="border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring focus:ring-pink-200">
                     <option value="sirup">Sirup</option>
                     <option value="kapsul">Kapsul</option>
                     <option value="tablet">Tablet</option>
                 </select>
             </div>
             <div class="flex flex-col mb-2">
-                <label for="quantity" class="mb-1">Quantity:</label>
-                <input type="number" id="quantity" class="border border-gray-300 rounded-md py-1 px-3 focus:outline-none">
+                <label for="quantity" class="mb-1 text-gray-700">🛒 Quantity:</label>
+                <input type="number" id="quantity" class="border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring focus:ring-pink-200">
             </div>
             <div class="flex flex-col mb-2">
-                <label for="deliveryType" class="mb-1">Delivery Type:</label>
-                <select id="deliveryType" class="border border-gray-300 rounded-md py-1 px-3 focus:outline-none">
+                <label for="deliveryType" class="mb-1 text-gray-700">🚚 Delivery Type:</label>
+                <select id="deliveryType" class="border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring focus:ring-pink-200">
                     <option value="pick up">Pick Up</option>
                     <option value="delivery">Delivery</option>
                 </select>
@@ -47,17 +60,31 @@
             <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">Add Medicine</button>
         </form>
 
-        <h2 class="text-xl font-semibold mb-2">All Medicines</h2>
-        <ul id="medicineList" class="border border-gray-300 rounded-lg p-2">
-            <!-- Medicines will be dynamically added here -->
-        </ul>
+        <h2 class="text-xl font-semibold mb-2 text-gray-800">All Medicines</h2>
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-white border border-gray-300">
+                <thead>
+                    <tr>
+                        <th class="py-2 px-4 border-b border-gray-300">ID</th>
+                        <th class="py-2 px-4 border-b border-gray-300">Name</th>
+                        <th class="py-2 px-4 border-b border-gray-300">Type</th>
+                        <th class="py-2 px-4 border-b border-gray-300">Quantity</th>
+                        <th class="py-2 px-4 border-b border-gray-300">Delivery Type</th>
+                        <th class="py-2 px-4 border-b border-gray-300">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="medicineList">
+                    <!-- Medicines will be dynamically added here -->
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <!-- JavaScript -->
     <script>
         const addMedicineForm = document.getElementById('addMedicineForm');
         const messageDiv = document.getElementById('message');
-        const medicineListUl = document.getElementById('medicineList');
+        const medicineListTbody = document.getElementById('medicineList');
 
         // Function to handle form submission for adding medicine
         addMedicineForm.addEventListener('submit', async (event) => {
@@ -95,31 +122,23 @@
             const response = await fetch('/allMedicines');
             const data = await response.json();
 
-            medicineListUl.innerHTML = '';
+            medicineListTbody.innerHTML = '';
             data.medicines.forEach(medicine => {
-                const li = document.createElement('li');
-                li.textContent = `${medicine.id} - ${medicine.name} (${medicine.quantity})`;
+                const tr = document.createElement('tr');
 
-                // Add Update and Delete buttons
-                const updateButton = document.createElement('button');
-                updateButton.textContent = 'Update';
-                updateButton.className = 'ml-2 bg-green-500 text-white py-1 px-2 rounded-md hover:bg-green-600 focus:outline-none focus:bg-green-600';
-                updateButton.addEventListener('click', () => {
-                    // Call function to update medicine
-                    updateMedicine(medicine.id);
-                });
-                li.appendChild(updateButton);
+                tr.innerHTML = `
+                    <td class="py-2 px-4 border-b border-gray-300">${medicine.id}</td>
+                    <td class="py-2 px-4 border-b border-gray-300">${medicine.name}</td>
+                    <td class="py-2 px-4 border-b border-gray-300">${medicine.type}</td>
+                    <td class="py-2 px-4 border-b border-gray-300">${medicine.quantity}</td>
+                    <td class="py-2 px-4 border-b border-gray-300">${medicine.delivery_type}</td>
+                    <td class="py-2 px-4 border-b border-gray-300">
+                        <button class="bg-green-500 text-white py-1 px-2 rounded-md hover:bg-green-600 focus:outline-none focus:bg-green-600" onclick="updateMedicine('${medicine.id}')">Update</button>
+                        <button class="bg-red-500 text-white py-1 px-2 rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600" onclick="deleteMedicine('${medicine.id}')">Delete</button>
+                    </td>
+                `;
 
-                const deleteButton = document.createElement('button');
-                deleteButton.textContent = 'Delete';
-                deleteButton.className = 'ml-2 bg-red-500 text-white py-1 px-2 rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600';
-                deleteButton.addEventListener('click', () => {
-                    // Call function to delete medicine
-                    deleteMedicine(medicine.id);
-                });
-                li.appendChild(deleteButton);
-
-                medicineListUl.appendChild(li);
+                medicineListTbody.appendChild(tr);
             });
         }
 
@@ -165,10 +184,12 @@
             await fetchAllMedicines();
         }
     </script>
-</body>
 
-<footer class="text-center py-4 text-gray-500 text-sm">
-    &copy; 2024 Stephanie Hebrina (5027221069).
-</footer>
+    <!-- Footer -->
+    <footer class="bg-green-200 text-center py-4 text-gray-700 text-sm mt-6">
+        &copy; 2024 Stephanie Hebrina (5027221069).
+    </footer>
+
+</body>
 
 </html>

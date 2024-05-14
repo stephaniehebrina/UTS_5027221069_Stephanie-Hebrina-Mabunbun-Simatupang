@@ -28,3 +28,27 @@ Read : Membaca atau mengambil informasi yang ada dari dari database.
 Update : Memperbarui informasi yang sudah ada dalam sistem manajemen apotek.
 
 Delete : Menghapus entri atau informasi dari sistem manajemen apotek.
+
+## Dokumentasi Website :
+A. Add Medicine 
+![add](additional/add.png)
+Tampilan diatas akan muncul "Medicine added successfully" yang berarti obat sudah berhasil ditambahkan
+
+B. Update Medicine
+
+Jika kita click Update di kolom Actions, akan otomatis muncul seperti ini :
+![up1](additional/up1.png)
+![up2](additional/up2.png)
+
+Kemudian jika berhasil update :
+![uppp](additional/up.png)
+"Medicine updated successfully" yang berarti obat sudah berhasil diganti
+
+C. Delete Medicine 
+![del](additional/del.png)
+Tampilan diatas akan muncul "Medicine deleted successfully" yang berarti obat sudah berhasil dihapus
+
+D. Isi mongoDB 
+![MONGO](additional/mongodb.png)
+
+Full demo : https://youtu.be/N5P-ueIXYa0?si=zVIF8w0ncfaEHBfQ 
